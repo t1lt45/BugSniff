@@ -1,58 +1,58 @@
-# BugSniff
-Welcome to BugSniff, a tool focused on organizing and filtering URLs, designed to automate cybersecurity processes and information gathering. BugSniff streamlines data handling, such as cleaning and organizing URLs for educational and offensive security study purposes.
+# BugSniff (ReconFlow Engine)
 
-![image](https://github.com/user-attachments/assets/ac1a71eb-533a-41ee-b84e-15d36b6e31ad)
+BugSniff é uma ferramenta de automação para a fase inicial de reconhecimento em programas de Bug Bounty. Ela orquestra ferramentas populares para descobrir subdomínios, validar hosts ativos e extrair URLs, apresentando um resultado final filtrado e pronto para análise.
 
+## Funcionalidades
 
-## Dependencies
-### To ensure the script works correctly, make sure the following dependencies are installed:
+-   **Enumeração de Subdomínios:** Utiliza o **Subfinder** para descobrir subdomínios de uma lista de alvos.
+-   **Validação de Hosts:** Utiliza o **Httpx** para verificar quais subdomínios encontrados estão respondendo em portas HTTP/HTTPS.
+-   **Extração de URLs:** Utiliza o **Katana** para navegar (crawl) nos hosts ativos e extrair URLs.
+-   **Filtragem Inteligente:** Processa a lista final de URLs para remover conteúdo estático e irrelevante (como `.css`, `.jpg`, `.pdf`, etc.).
 
-    Bash: Default scripting language in UNIX/Linux systems.
+## Pré-requisitos (IMPORTANTE)
 
-    Subfinder: Used for discovering subdomains of a target domain.
+Para que o BugSniff funcione, você **PRECISA** ter as seguintes ferramentas Go instaladas e configuradas no `PATH` do seu sistema:
 
-    sort: Organizes and filters results to keep subdomain and URL lists alphabetical and free of duplicates.
+1.  **Subfinder**
+    -   Instalação: `go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest`
+2.  **Httpx**
+    -   Instalação: `go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest`
+3.  **Katana**
+    -   Instalação: `go install -v github.com/projectdiscovery/katana/cmd/katana@latest`
+4.  **Python 3.6+**
 
-    Httpx: Validates and checks active URLs.
+## Instalação
 
-    Katana: A web scanner for discovering accessible URLs and potential vulnerabilities.
+Nenhuma instalação de pacotes Python é necessária para a versão atual. Apenas clone ou baixe os arquivos deste projeto:
 
-    egrep: Applies filters and regex for URL filtering.
+```bash
+git clone <url_do_seu_repositorio>
+cd <nome_do_repositorio>
+```
 
-## Golang
-    #Download Golang https://go.dev/dl
-    rm -rf /usr/local/go && tar -C /root -xzf go1.22.0.linux-amd64.tar.gz
-    export PATH=$PATH:/root/go/bin
-    echo "PATH=\$PATH:/root/go/bin" >> /root/.bashrc
+## Como Usar
 
+A ferramenta é executada via linha de comando, exigindo um arquivo de texto com a lista de domínios que você deseja analisar.
 
-## Automation tools
-    #Subfinder
-    go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-    
-    #HTTPX
-    go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
+**Sintaxe:**
+```bash
+python3 main.py -l <arquivo_de_dominios.txt> -o <pasta_de_saida>
+```
 
-    #Katana
-    go install github.com/projectdiscovery/katana/cmd/katana@latest
-    
-⚠Ensure these dependencies are installed and accessible in the system PATH for proper functionality.⚠
+**Argumentos:**
 
+-   `-l`, `--list`: **(Obrigatório)** Caminho para o arquivo contendo a lista de domínios, um por linha.
+-   `-o`, `--output`: **(Opcional)** Nome da pasta onde os resultados serão salvos. Se não for especificado, será criada uma pasta chamada `resultados`.
 
+**Exemplo de uso:**
 
-### 1- Clone this repository to your local environment:
-``git clone https://github.com/t1lt4s/BugSniff.git``
-
-### 2- Set up an alias to easily run the script from any directory:
-``alias BugSniff='bash /caminho/para/seu/BugSniff/BugSniff.sh'``
-
-### 3- Run the script:
-``BugSniff``
-
-
-## Contribution
-I'm new to automation and developing BugSniff to learn and grow! Any suggestions, improvements, or feedback are highly appreciated. Join me to make BugSniff even more functional and powerful. 😄
-
-
-## DISCLAIMER
-### "This project is for educational and experimental purposes only. Use it responsibly and only in authorized environments. The developers are not responsible for any misuse."
+1.  Crie um arquivo `dominios.txt`:
+    ```txt
+    example.com
+    google.com
+    ```
+2.  Execute o BugSniff:
+    ```bash
+    python3 main.py -l dominios.txt -o meus_resultados
+    ```
+3.  Ao final da execução, uma pasta `meus_resultados` será criada, contendo os arquivos intermediários de cada ferramenta e o arquivo final `URLs_filtradas.txt`.

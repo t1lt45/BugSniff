@@ -1,0 +1,2 @@
+# Nenhuma dependência externa de Python por enquanto.
+# A biblioteca 'shodan' será adicionada aqui futuramente.
