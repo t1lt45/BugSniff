@@ -1,3 +1,2 @@
-partners.shopify.com
-shopify.plus
-shop.app
+example.com
+google.com

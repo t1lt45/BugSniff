@@ -1,29 +1,44 @@
-# BugSniff (ReconFlow Engine)
+# BugSniff (Fase 1: Descoberta de Subdomínios)
 
-BugSniff é uma ferramenta de automação para a fase inicial de reconhecimento em programas de Bug Bounty. Ela orquestra ferramentas populares para descobrir subdomínios, validar hosts ativos e extrair URLs, apresentando um resultado final filtrado e pronto para análise.
+BugSniff é uma ferramenta de automação para a fase inicial de reconhecimento em programas de Bug Bounty e pentests. Esta versão inicial foca em duas tarefas essenciais: descobrir subdomínios de forma massiva e validar quais deles estão realmente ativos e respondendo na web.
+
+A ferramenta foi projetada para ser leve, rápida e a base para fases futuras de reconhecimento, como a descoberta de diretórios (fuzzing).
 
 ## Funcionalidades
 
 -   **Enumeração de Subdomínios:** Utiliza o **Subfinder** para descobrir subdomínios de uma lista de alvos.
--   **Validação de Hosts:** Utiliza o **Httpx** para verificar quais subdomínios encontrados estão respondendo em portas HTTP/HTTPS.
--   **Extração de URLs:** Utiliza o **Katana** para navegar (crawl) nos hosts ativos e extrair URLs.
--   **Filtragem Inteligente:** Processa a lista final de URLs para remover conteúdo estático e irrelevante (como `.css`, `.jpg`, `.pdf`, etc.).
+-   **Enriquecimento com API (Opcional):** Permite o uso de uma chave da API do **Shodan** para obter resultados de subdomínios ainda mais completos e precisos.
+-   **Validação de Hosts Ativos:** Utiliza o **Httpx** para verificar quais dos subdomínios encontrados estão respondendo em portas HTTP/HTTPS.
+-   **Saída Limpa:** Gera um único arquivo final (`subdominios_ativos_final.txt`) contendo a lista limpa de subdomínios ativos, pronta para ser usada como entrada em outras ferramentas.
 
 ## Pré-requisitos (IMPORTANTE)
 
-Para que o BugSniff funcione, você **PRECISA** ter as seguintes ferramentas Go instaladas e configuradas no `PATH` do seu sistema:
+Para que o BugSniff funcione, você **PRECISA** ter as seguintes ferramentas Go instaladas e configuradas no `PATH` do seu sistema. O Python 3.6+ também é necessário.
 
-1.  **Subfinder**
-    -   Instalação: `go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest`
-2.  **Httpx**
-    -   Instalação: `go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest`
-3.  **Katana**
-    -   Instalação: `go install -v github.com/projectdiscovery/katana/cmd/katana@latest`
-4.  **Python 3.6+**
+**1. Go (Linguagem de Programação)**
+   - Verifique se o Go está instalado: `go version`
+   - Se não estiver, siga o guia de instalação oficial: [https://golang.org/doc/install](https://golang.org/doc/install)
+   - Lembre-se de configurar as variáveis de ambiente (`GOPATH`, `GOBIN`) corretamente.
+
+**2. Python 3.6+**
+   - Verifique a versão: `python3 --version`
+
+**3. Ferramentas da ProjectDiscovery**
+   - Execute os seguintes comandos no seu terminal para instalar o `subfinder` e o `httpx`:
+
+   ```bash
+   go install -v [github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest](https://github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest)
+   go install -v [github.com/projectdiscovery/httpx/cmd/httpx@latest](https://github.com/projectdiscovery/httpx/cmd/httpx@latest)
+   ```
+   - Após a instalação, feche e reabra seu terminal e verifique se as ferramentas são reconhecidas:
+   ```bash
+   subfinder -h
+   httpx -h
+   ```
 
 ## Instalação
 
-Nenhuma instalação de pacotes Python é necessária para a versão atual. Apenas clone ou baixe os arquivos deste projeto:
+Nenhuma instalação de pacotes Python é necessária. Apenas clone ou baixe os arquivos deste projeto.
 
 ```bash
 git clone <url_do_seu_repositorio>
@@ -32,27 +47,44 @@ cd <nome_do_repositorio>
 
 ## Como Usar
 
-A ferramenta é executada via linha de comando, exigindo um arquivo de texto com a lista de domínios que você deseja analisar.
+A ferramenta é executada via linha de comando. Você precisa fornecer um arquivo de texto com os domínios que deseja analisar.
 
 **Sintaxe:**
 ```bash
-python3 main.py -l <arquivo_de_dominios.txt> -o <pasta_de_saida>
+python3 main.py -l <arquivo_de_dominios.txt> [opções]
 ```
 
-**Argumentos:**
+### Argumentos
 
--   `-l`, `--list`: **(Obrigatório)** Caminho para o arquivo contendo a lista de domínios, um por linha.
--   `-o`, `--output`: **(Opcional)** Nome da pasta onde os resultados serão salvos. Se não for especificado, será criada uma pasta chamada `resultados`.
+| Argumento Curto | Argumento Longo | Descrição                                                                                                 | Obrigatório |
+| :-------------- | :-------------- | :-------------------------------------------------------------------------------------------------------- | :---------- |
+| `-l`            | `--list`        | Caminho para o arquivo contendo a lista de domínios (um por linha).                                       | **Sim** |
+| `-o`            | `--output`      | Nome da pasta onde os resultados serão salvos. (Padrão: `resultados`)                                     | Não         |
+| `-sk`           | `--shodan-key`  | Sua chave da API do Shodan para obter melhores resultados de subdomínios.                                   | Não         |
 
-**Exemplo de uso:**
+### Exemplos de Uso
 
-1.  Crie um arquivo `dominios.txt`:
+**1. Uso Básico (sem API)**
+
+-   Crie um arquivo `dominios.txt`:
     ```txt
     example.com
     google.com
     ```
-2.  Execute o BugSniff:
+-   Execute o comando:
     ```bash
     python3 main.py -l dominios.txt -o meus_resultados
     ```
-3.  Ao final da execução, uma pasta `meus_resultados` será criada, contendo os arquivos intermediários de cada ferramenta e o arquivo final `URLs_filtradas.txt`.
+
+**2. Uso Avançado (com a API do Shodan)**
+
+-   Execute o comando fornecendo sua chave:
+    ```bash
+    python3 main.py -l dominios.txt -o meus_resultados -sk SUA_CHAVE_API_DO_SHODAN_AQUI
+    ```
+
+### Saída
+
+Ao final da execução, uma pasta de saída (ex: `meus_resultados`) será criada. Dentro dela, você encontrará os arquivos intermediários de cada ferramenta e o resultado principal:
+
+-   **`subdominios_ativos_final.txt`**: Um arquivo de texto limpo contendo todos os subdomínios ativos encontrados, prontos para a próxima fase do seu reconhecimento.
