@@ -41,8 +41,8 @@ Para que o BugSniff funcione, você **PRECISA** ter as seguintes ferramentas Go 
 Nenhuma instalação de pacotes Python é necessária. Apenas clone ou baixe os arquivos deste projeto.
 
 ```bash
-git clone <url_do_seu_repositorio>
-cd <nome_do_repositorio>
+git clone https://github.com/t1lt45/BugSniff.git
+cd BugSniff
 ```
 
 ## Como Usar
