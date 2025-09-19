@@ -1,4 +1,4 @@
-# BugSniff (Fase 1: Descoberta de Subdomínios)
+# BugSniff (Descoberta de Subdomínios)
 
 BugSniff é uma ferramenta de automação para a fase inicial de reconhecimento em programas de Bug Bounty e pentests. Esta versão inicial foca em duas tarefas essenciais: descobrir subdomínios de forma massiva e validar quais deles estão realmente ativos e respondendo na web.
 
