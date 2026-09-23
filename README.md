@@ -1,6 +1,6 @@
 # BugSniff (Descoberta de Subdomínios)
 
->**0xtiltas**
+>**tiltas**
 
 ![Preview do BugSniff no terminal](assets/preview.png)
 
