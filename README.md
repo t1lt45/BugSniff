@@ -1,6 +1,8 @@
 # BugSniff (Descoberta de Subdomínios)
 
+<<<<<<< HEAD
 >**t1lt45**
+=======
 
 ![Preview do BugSniff no terminal](assets/preview.png)
 
