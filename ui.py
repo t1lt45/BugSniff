@@ -22,7 +22,7 @@ except ImportError:
 
 console = Console()
 
-AUTHOR_TAG = "0xtiltas"
+AUTHOR_TAG = "t1lt45"
 
 
 def print_banner(version: str = "2.0"):

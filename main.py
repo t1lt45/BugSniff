@@ -40,7 +40,7 @@ def build_parser():
         help="Profundidade do crawling do Katana. Padrão: 2.",
     )
     parser.add_argument(
-        "--version", action="version", version=f"BugSniff v{VERSION} — by 0xtiltas",
+        "--version", action="version", version=f"BugSniff v{VERSION} — by t1lt45",
     )
 
     return parser
