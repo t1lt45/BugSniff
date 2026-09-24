@@ -29,7 +29,7 @@ def print_banner(version: str = "2.0"):
     if _HAS_FIGLET:
         art = pyfiglet.figlet_format("BugSniff", font="slant")
     else:
-        art = "B U G S N I F F"
+        art = "B U G S N I F F\n"
 
     console.print(Panel.fit(
         f"[bold cyan]{art}[/bold cyan]"
